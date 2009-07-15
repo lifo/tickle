@@ -54,5 +54,13 @@ To run unit tests in 4 parallel processes :
 	$ rake tickle:units[4]
 	
 tickle:functionals and tickle:integration should work as expected.
-	
+
+Tuning
+======
+
+For best results, use tickle with Ruby Enterprise Edition and Twitter's GC settings :
+
+- http://www.rubyenterpriseedition.com/
+- http://blog.evanweaver.com/articles/2009/04/09/ruby-gc-tuning/
+
 Copyright (c) 2009 Pratik Naik, released under the MIT license
