@@ -1,0 +1,58 @@
+Tickle
+======
+
+Thanks to http://github.com/jasonm/parallel_test for the concept.
+
+Setup
+=====
+
+To install :
+
+	$ script/plugin install http://github.com/lifo/tickle
+
+Database Setup :
+
+You'll need to create 'N' new databases. Where 'N' is the maximum number of parallel processes you want to run.
+
+Assuming you want to run 2 proccesses, you'll need to provide test_1 and test_2 config settings in database.yml :
+
+test_1:
+  adapter: mysql
+  encoding: utf8
+  database: myapp_test1
+  pool: 5
+  username: root
+  password:
+  socket: /tmp/mysql.sock
+
+test_2:
+  adapter: mysql
+  encoding: utf8
+  database: myapp_test1
+  pool: 5
+  username: root
+  password:
+  socket: /tmp/mysql.sock
+
+Example
+=======
+
+To run all tests :
+
+	$ rake tickle # This will use 2 processes by default
+
+To run all tests using 3 processes :
+
+	$ rake tickle[3]
+
+To only run unit tests :
+
+	$ rake tickle:units
+
+To run unit tests in 4 parallel processes :
+	
+	$ rake tickle:units[4]
+	
+tickle:functionals and tickle:integration should work as expected.
+	
+Copyright (c) 2009 Pratik Naik, released under the MIT license
