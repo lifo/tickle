@@ -31,14 +31,30 @@ module Tickle
     # Wait...
     Process.waitall
   end
-
   def prepare_databse(db)
-    ActiveRecord::Base.establish_connection(db)
+    ActiveRecord::Base.establish_connection(db) unless postgres? 
     conf = ActiveRecord::Base.configurations
-    ActiveRecord::Base.connection.recreate_database(conf[db.to_s]["database"], conf[db.to_s])
+    
+    adapter = ActiveRecord::Base.connection
+    recreate_db(conf[db.to_s]["database"], adapter, conf)
+    
     ActiveRecord::Base.establish_connection(conf[db.to_s])
     ActiveRecord::Schema.verbose = false
     file = ENV['SCHEMA'] || "#{RAILS_ROOT}/db/schema.rb"
     load(file)
+  end
+  
+  private
+  def postgres?
+    @postgres ||= ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
+  end
+  
+  def recreate_db(db, adapter, options = {})
+    if postgres?
+      system("dropdb #{db}")
+      adapter.create_database(db)
+    else
+      adapter.recreate_database(db, options[db.to_s])
+    end
   end
 end
