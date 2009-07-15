@@ -8,7 +8,7 @@ Setup
 
 To install :
 
-	$ script/plugin install http://github.com/lifo/tickle
+	$ script/plugin install git://github.com/lifo/tickle.git
 
 Database Setup :
 
