@@ -24,7 +24,7 @@ namespace :tickle do
 
       size = args[:count] ? args[:count].to_i : 2
       puts "Running #{type} tests using #{size} processes"
-      Tickle.run_tests type, 2
+      Tickle.run_tests type, size
     end
   end
 end
