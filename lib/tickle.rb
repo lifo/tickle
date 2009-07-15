@@ -31,30 +31,33 @@ module Tickle
     # Wait...
     Process.waitall
   end
+
   def prepare_databse(db)
-    ActiveRecord::Base.establish_connection(db) unless postgres? 
-    conf = ActiveRecord::Base.configurations
-    
-    adapter = ActiveRecord::Base.connection
-    recreate_db(conf[db.to_s]["database"], adapter, conf)
-    
-    ActiveRecord::Base.establish_connection(conf[db.to_s])
+    recreate_db(config[db.to_s])
+
+    ActiveRecord::Base.establish_connection(config[db.to_s])
     ActiveRecord::Schema.verbose = false
     file = ENV['SCHEMA'] || "#{RAILS_ROOT}/db/schema.rb"
     load(file)
   end
-  
-  private
-  def postgres?
-    @postgres ||= ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
-  end
-  
-  def recreate_db(db, adapter, options = {})
+
+  def recreate_db(db_config)
+    db = db_config["database"]
+
     if postgres?
       system("dropdb #{db}")
-      adapter.create_database(db)
+      ActiveRecord::Base.connection.create_database(db)
     else
-      adapter.recreate_database(db, options[db.to_s])
+      ActiveRecord::Base.establish_connection(db_config)
+      ActiveRecord::Base.connection.recreate_database(db, db_config)
     end
+  end
+
+  def postgres?
+    defined?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter) && ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
+  end
+
+  def config
+    ActiveRecord::Base.configurations
   end
 end
