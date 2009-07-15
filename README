@@ -28,7 +28,7 @@ test_1:
 test_2:
   adapter: mysql
   encoding: utf8
-  database: myapp_test1
+  database: myapp_test2
   pool: 5
   username: root
   password:
