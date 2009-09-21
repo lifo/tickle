@@ -18,18 +18,31 @@ module Tickle
     dir = "#{Rails.root}/test/#{dir}/**/*_test.rb" unless dir.index(Rails.root)
     groups = Dir[dir].sort.in_groups(n, false)
 
+    pids =  fork_tests(groups)
+
+    Signal.trap 'SIGINT', lambda { pids.each {|p| Process.kill("KILL", p)}; exit 1 }
+    Process.waitall
+  end
+
+  def fork_tests(groups)
     pids = []
-    n.times do |i|
+
+    unless config['test_1']
+      prepare_databse(:test)
+      prepared = true
+    end
+
+    GC.start
+
+    groups.each_with_index do |group, i|
       pids << Process.fork do
-        prepare_databse(:"test_#{i+1}")
-        groups[i].each {|f| load(f) unless f =~ /^-/  }
+        # If already prepared, reconnect. Else prepare.
+        prepared ? ActiveRecord::Base.establish_connection : prepare_databse(:"test_#{i+1}")
+        group.each {|f| load(f) unless f =~ /^-/  }
       end
     end
 
-    Signal.trap 'SIGINT', lambda { pids.each {|p| Process.kill("KILL", p)}; exit 1 }
-
-    # Wait...
-    Process.waitall
+    pids
   end
 
   def prepare_databse(db)

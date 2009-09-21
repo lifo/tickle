@@ -10,30 +10,6 @@ To install :
 
 	$ script/plugin install git://github.com/lifo/tickle.git
 
-Database Setup :
-
-You'll need to create 'N' new databases. Where 'N' is the maximum number of parallel processes you want to run.
-
-Assuming you want to run 2 proccesses, you'll need to provide test_1 and test_2 config settings in database.yml :
-
-test_1:
-  adapter: mysql
-  encoding: utf8
-  database: myapp_test1
-  pool: 5
-  username: root
-  password:
-  socket: /tmp/mysql.sock
-
-test_2:
-  adapter: mysql
-  encoding: utf8
-  database: myapp_test2
-  pool: 5
-  username: root
-  password:
-  socket: /tmp/mysql.sock
-
 Example
 =======
 
@@ -62,5 +38,30 @@ For best results, use tickle with Ruby Enterprise Edition and Twitter's GC setti
 
 - http://www.rubyenterpriseedition.com/
 - http://blog.evanweaver.com/articles/2009/04/09/ruby-gc-tuning/
+
+Database Setup
+==============
+
+If you're NOT USING transactional fixtures, you'll need to create 'N' new databases. Where 'N' is the maximum number of parallel processes you want to run.
+
+Assuming you want to run 2 proccesses, you'll need to provide test_1 and test_2 config settings in database.yml :
+
+test_1:
+  adapter: mysql
+  encoding: utf8
+  database: myapp_test1
+  pool: 5
+  username: root
+  password:
+  socket: /tmp/mysql.sock
+
+test_2:
+  adapter: mysql
+  encoding: utf8
+  database: myapp_test2
+  pool: 5
+  username: root
+  password:
+  socket: /tmp/mysql.sock
 
 Copyright (c) 2009 Pratik Naik, released under the MIT license
