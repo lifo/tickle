@@ -22,7 +22,7 @@ namespace :tickle do
     task t, :count do |t, args|
       Tickle.load_environment
 
-      size = args[:count] ? args[:count].to_i : 2
+      size = args[:count] ? args[:count].to_i : 3
       puts "Running #{type} tests using #{size} processes"
       Tickle.run_tests type, size
     end

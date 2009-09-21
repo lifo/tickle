@@ -15,11 +15,11 @@ Example
 
 To run all tests :
 
-	$ rake tickle # This will use 2 processes by default
+	$ rake tickle # This will use 3 processes by default
 
-To run all tests using 3 processes :
+To run all tests using 2 processes :
 
-	$ rake tickle[3]
+	$ rake tickle[2]
 
 To only run unit tests :
 
