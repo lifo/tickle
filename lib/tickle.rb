@@ -15,7 +15,7 @@ module Tickle
   end
 
   def run_tests(dir, n = 2)
-    dir = "#{Rails.root}/test/#{dir}/**/*_test.rb" unless dir.index(Rails.root)
+    dir = "#{Rails.root}/test/#{dir}/**/*_test.rb" unless dir.index(Rails.root.to_s)
     groups = Dir[dir].sort.in_groups(n, false)
 
     pids =  fork_tests(groups)
