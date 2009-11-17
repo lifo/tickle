@@ -1,7 +1,7 @@
 Tickle
 ======
 
-Tickle spawns multiple processes and tries running your test suite in parallel for reducing the time taken to run them. Thanks to http://github.com/jasonm/parallel_test for the concept.
+Tickle spawns multiple processes and tries running your test suite in parallel for reducing the time taken to run them. Thanks to http://github.com/grosser/parallel_specs for the concept.
 
 Setup
 =====
